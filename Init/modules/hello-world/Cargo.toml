@@ -1,0 +1,12 @@
+[package]
+name = "hello-world"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+cf-modkit = { workspace = true }
+inventory = { workspace = true }
+tracing = { workspace = true }
+
+tokio = { workspace = true }
+tokio-util = { workspace = true }
