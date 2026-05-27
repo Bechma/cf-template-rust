@@ -9,7 +9,7 @@ name = "{{ crate_name }}"
 
 [dependencies]
 # ModKit module system — the backbone for module lifecycle and capability wiring
-cf-modkit = { version = "0.6.2" }
+cf-modkit = { version = "0.6.10" }
 
 # HTTP framework
 axum = "0.8"
