@@ -1,0 +1,8 @@
+[workspace]
+version = 1
+
+[apps.quickstart.dev]
+config = "quickstart.yml"
+modules = [
+    { source = "local", name = "hello-world" },
+]
