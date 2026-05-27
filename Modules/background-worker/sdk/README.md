@@ -1,6 +1,6 @@
-# background-worker-sdk
+# {{ project-name }}-sdk
 
-Public API crate for the `background-worker` module. Depend on this crate to fetch Pokemon data
+Public API crate for the `{{ project-name }}` module. Depend on this crate to fetch Pokemon data
 from any other module in your CyberFabric application — without taking a direct dependency on the
 module itself.
 
@@ -19,13 +19,13 @@ module itself.
 ```toml
 # your-module/Cargo.toml
 [dependencies]
-background-worker-sdk = { path = "../background-worker/sdk" }
+{{ project-name }}-sdk = { path = "../{{ project-name }}/sdk" }
 ```
 
 ### 2. Obtain the client from `ClientHub`
 
 ```rust
-use background_worker_sdk::PokemonClientV1;
+use {{ crate_name }}_sdk::PokemonClientV1;
 
 async fn example(hub: &ClientHub) -> modkit::Result<()> {
     let client = hub.get::<dyn PokemonClientV1>()?;
@@ -35,13 +35,13 @@ async fn example(hub: &ClientHub) -> modkit::Result<()> {
 }
 ```
 
-`hub.get` returns an error if `background-worker` was not loaded (i.e. not registered during
+`hub.get` returns an error if `{{ project-name }}` was not loaded (i.e. not registered during
 `init()`), so make sure the module is included in your application's module list.
 
 ### 3. Handle errors
 
 ```rust
-use background_worker_sdk::{PokemonClientV1, PokemonError};
+use {{ crate_name }}_sdk::{PokemonClientV1, PokemonError};
 
 match client.fetch_random_pokemon().await {
     Ok(pokemon) => println!("Got: {}", pokemon.name),
@@ -51,7 +51,7 @@ match client.fetch_random_pokemon().await {
 
 ## How the client is registered
 
-`background-worker` registers the implementation during its `init()` phase:
+`{{ project-name }}` registers the implementation during its `init()` phase:
 
 ```rust
 ctx.client_hub().register::<dyn PokemonClientV1>(Arc::new(local_client));

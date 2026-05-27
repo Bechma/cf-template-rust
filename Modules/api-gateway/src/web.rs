@@ -1,4 +1,4 @@
-//! HTTP handler functions for the REST host's built-in endpoints.
+//! HTTP handler functions for the API gateway's built-in endpoints.
 //!
 //! Both endpoints are always public (no authentication required) so they can be
 //! used by load-balancers and container orchestrators without credentials.

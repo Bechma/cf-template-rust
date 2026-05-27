@@ -1,6 +1,6 @@
-//! Background Worker SDK
+//! {{ project-name }} SDK
 //!
-//! This crate provides the public API for the `background-worker` module:
+//! This crate provides the public API for the `{{ project-name }}` module:
 //! - `PokemonClientV1` trait — the inter-module client interface
 //! - `Pokemon` — the public model type
 //! - `PokemonError` — the public error type
@@ -9,7 +9,7 @@
 //!
 //! Consumers obtain the client from `ClientHub`:
 //! ```ignore
-//! use background_worker_sdk::PokemonClientV1;
+//! use {{ crate_name }}_sdk::PokemonClientV1;
 //!
 //! // Get the client from ClientHub
 //! let client = hub.get::<dyn PokemonClientV1>()?;

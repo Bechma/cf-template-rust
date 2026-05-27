@@ -1,4 +1,4 @@
-use api_db_handler_sdk::PokemonError;
+use {{ crate_name }}_sdk::PokemonError;
 use modkit_db::DbError;
 use modkit_db::secure::InfraError;
 use modkit_db::secure::ScopeError;

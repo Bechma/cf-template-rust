@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use background_worker_sdk::Pokemon;
+use {{ crate_name }}_sdk::Pokemon;
 
 use crate::domain::error::DomainError;
 use crate::domain::ports::PokemonRepository;

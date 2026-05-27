@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use api_db_handler_sdk::Pokemon;
+use {{ crate_name }}_sdk::Pokemon;
 use modkit_macros::domain_model;
 use modkit_odata::{ODataQuery, Page};
 use modkit_security::AccessScope;

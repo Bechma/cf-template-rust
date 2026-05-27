@@ -1,8 +1,8 @@
 use std::pin::Pin;
 use std::sync::Arc;
 
-use api_db_handler_sdk::odata::PokemonSchema;
-use api_db_handler_sdk::{Pokemon, PokemonError, PokemonStreamingClientV1};
+use {{ crate_name }}_sdk::odata::PokemonSchema;
+use {{ crate_name }}_sdk::{Pokemon, PokemonError, PokemonStreamingClientV1};
 use futures_util::{Stream, StreamExt};
 use modkit_macros::domain_model;
 use modkit_sdk::odata::{QueryBuilder, items_stream_boxed};

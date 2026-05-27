@@ -9,16 +9,19 @@ slugify() {
 state_root="${VALIDATE_TEMPLATES_STATE_ROOT:-.bacon/validate-templates}"
 target_root="${VALIDATE_TEMPLATES_TARGET_ROOT:-${CARGO_TARGET_DIR:-$state_root/target}}"
 
-if (($# != 1)); then
-    echo "usage: $0 <template-dir>" >&2
+if (($# < 1 || $# > 2)); then
+    echo "usage: $0 <template-dir> [project-name]" >&2
     exit 1
 fi
 
 template_dir=$1
-project_name="generated-$(slugify "$template_dir")"
-project_root="$state_root/$project_name"
+template_slug="$(slugify "$template_dir")"
+project_name="${2:-generated-$template_slug}"
+project_slug="$(slugify "$project_name")"
+validation_slug="$template_slug-$project_slug"
+project_root="$state_root/$validation_slug"
 manifest_path="$project_root/Cargo.toml"
-template_target_dir="$target_root/$(slugify "$template_dir")"
+template_target_dir="$target_root/$validation_slug"
 
 mkdir -p "$project_root" "$template_target_dir"
 find "$project_root" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +

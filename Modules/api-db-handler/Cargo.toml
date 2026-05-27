@@ -1,11 +1,11 @@
 [package]
-name = "api-db-handler"
+name = "{{ project-name }}"
 version = "0.0.1"
 edition = "2024"
 
 [features]
 default = ["odata"]
-odata = ["api-db-handler-sdk/odata"] # enable streaming API with typed queries
+odata = ["{{ project-name }}-sdk/odata"] # enable streaming API with typed queries
 sqlite = ["cf-modkit-db/sqlite"]
 postgres = ["cf-modkit-db/pg"]
 mysql = ["cf-modkit-db/mysql"]
@@ -14,7 +14,7 @@ mysql = ["cf-modkit-db/mysql"]
 # Core
 anyhow = "1.0"
 tracing = "0.1"
-api-db-handler-sdk = { path = "./sdk" }
+{{ project-name }}-sdk = { path = "./sdk" }
 
 # Serde and JSON schema
 serde = { version = "1.0", features = ["derive"] }

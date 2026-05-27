@@ -1,7 +1,7 @@
 //! Only compiled when the `odata` feature is enabled — the list route requires
 //! typed OData filter fields from the SDK's `odata` module.
 use super::{dto, handlers};
-use api_db_handler_sdk::odata::PokemonFilterField;
+use {{ crate_name }}_sdk::odata::PokemonFilterField;
 use axum::Router;
 use modkit::api::OpenApiRegistry;
 use modkit::api::operation_builder::{OperationBuilder, OperationBuilderODataExt};

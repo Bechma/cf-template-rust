@@ -5,9 +5,9 @@ use crate::infra::storage::entity::pokemon::{Column, Entity as PokemonEntity};
 #[cfg(feature = "odata")]
 use crate::infra::storage::odata_mapper::PokemonODataMapper;
 use crate::{domain::error::DomainError, domain::repos::PokemonRepository};
-use api_db_handler_sdk::Pokemon;
+use {{ crate_name }}_sdk::Pokemon;
 #[cfg(feature = "odata")]
-use api_db_handler_sdk::odata::PokemonFilterField;
+use {{ crate_name }}_sdk::odata::PokemonFilterField;
 use modkit_db::odata::LimitCfg;
 #[cfg(feature = "odata")]
 use modkit_db::odata::paginate_odata;
