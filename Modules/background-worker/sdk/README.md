@@ -1,7 +1,7 @@
 # {{ project-name }}-sdk
 
 Public API crate for the `{{ project-name }}` module. Depend on this crate to fetch Pokemon data
-from any other module in your CyberFabric application — without taking a direct dependency on the
+from any other module in your ConstructorFabric gears application — without taking a direct dependency on the
 module itself.
 
 ## Types
