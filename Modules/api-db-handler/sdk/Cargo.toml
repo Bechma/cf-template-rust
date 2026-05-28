@@ -1,5 +1,5 @@
 [package]
-name = "api-db-handler-sdk"
+name = "{{ project-name }}-sdk"
 version = "0.0.1"
 edition = "2024"
 
@@ -9,12 +9,12 @@ odata = []
 
 [dependencies]
 # Core async trait helper exposed by ModKit
-cf-modkit = { version = "=0.6.2" }
+cf-modkit = { version = "=0.6.10" }
 
 # OData contract and pagination types
-cf-modkit-odata = { version = "=0.6.2" }
-cf-modkit-sdk = { version = "=0.6.2" }
-cf-modkit-odata-macros = { version = "=0.6.2" }
+cf-modkit-odata = { version = "=0.8.0" }
+cf-modkit-sdk = { version = "=0.6.5" }
+cf-modkit-odata-macros = { version = "=0.6.5" }
 
 # Data model + errors
 thiserror = "2.0"

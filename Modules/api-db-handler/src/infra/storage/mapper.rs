@@ -1,5 +1,5 @@
 use crate::infra::storage::entity;
-use api_db_handler_sdk::Pokemon;
+use {{ crate_name }}_sdk::Pokemon;
 
 /// Convert a database entity to a contract model (owned version)
 impl From<entity::pokemon::Model> for Pokemon {

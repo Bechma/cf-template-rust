@@ -3,7 +3,7 @@
 use modkit_db::odata::sea_orm_filter::{FieldToColumn, ODataFieldMapping};
 
 use crate::infra::storage::entity::{Column, Entity, Model};
-use api_db_handler_sdk::odata::PokemonFilterField;
+use {{ crate_name }}_sdk::odata::PokemonFilterField;
 
 /// Complete OData mapper for pokemon.
 pub struct PokemonODataMapper;

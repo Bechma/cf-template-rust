@@ -1,4 +1,4 @@
-use api_db_handler_sdk::Pokemon;
+use {{ crate_name }}_sdk::Pokemon;
 use time::OffsetDateTime;
 use uuid::Uuid;
 

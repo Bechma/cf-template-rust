@@ -1,4 +1,4 @@
-//! Public error types for the `background-worker` module.
+//! Public error types for the `{{ project-name }}` module.
 //!
 //! These errors are safe to expose to other modules and consumers.
 

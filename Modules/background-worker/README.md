@@ -1,4 +1,4 @@
-# background-worker
+# {{ project-name }}
 
 Periodically fetches a random Pokemon from the [PokeAPI](https://pokeapi.co/) and exposes the
 fetch capability to other modules via `ClientHub`.
@@ -6,8 +6,8 @@ fetch capability to other modules via `ClientHub`.
 ## Module structure
 
 ```
-background-worker/
-├── sdk/                        # Public API crate (background-worker-sdk)
+{{ project-name }}/
+├── sdk/                        # Public API crate ({{ project-name }}-sdk)
 │   └── src/
 │       ├── client.rs           # PokemonClientV1 trait
 │       ├── errors.rs           # PokemonError (public)
@@ -21,7 +21,7 @@ background-worker/
     ├── infra/
     │   ├── mod.rs              # PokemonHttpRepository (HTTP impl of PokemonRepository)
     │   └── model.rs            # PokemonResponse (raw API shape)
-    └── module.rs               # BackgroundWorkerModule (modkit wiring)
+    └── module.rs               # {{ crate_name | pascal_case }}Module (modkit wiring)
 ```
 
 ### Layer responsibilities
@@ -55,7 +55,7 @@ gracefully via a `CancellationToken` when the application shuts down.
 
 - `cf-modkit` — module framework (`Module`, `RunnableCapability`, `ModuleCtx`, `ClientHub`)
 - `cf-modkit-http` — `HttpClient` wrapper
-- `background-worker-sdk` — public SDK (path dependency)
+- `{{ project-name }}-sdk` — public SDK (path dependency)
 - `anyhow` — error handling in modkit boundaries
 - `thiserror` — `DomainError` derive
 - `async-trait` — object-safe async traits

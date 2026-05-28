@@ -1,5 +1,5 @@
 [package]
-name = "background-worker"
+name = "{{ project-name }}"
 description = "Fetches pokemon heigth info from a remote API"
 version = "0.0.1"
 edition = "2024"
@@ -8,8 +8,8 @@ edition = "2024"
 anyhow = { version = "1.0" }
 thiserror = { version = "2.0" }
 
-cf-modkit = { version = "0.6.2" }
-cf-modkit-http = { version = "0.6.2" }
+cf-modkit = { version = "0.6.10" }
+cf-modkit-http = { version = "0.6.5" }
 
 tracing = { version = "0.1" }
 
@@ -19,4 +19,4 @@ tokio-util = { version = "0.7.18" }
 # Serialization
 serde = { version = "1.0.228", features = ["derive"] }
 
-background-worker-sdk = { path = "./sdk" }
+{{ project-name }}-sdk = { path = "./sdk" }

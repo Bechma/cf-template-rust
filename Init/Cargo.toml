@@ -15,11 +15,10 @@ nursery = "deny"
 
 [workspace.dependencies]
 anyhow = { version = "1.0" }
-cf-modkit = { version = "0.6.2" }
+cf-modkit = { version = "0.6.10" }
 
 tokio = { version = "1.51.1", features = ["full"] }
 tokio-util = "0.7.18"
 tracing = "0.1.44"
 
 serde = { version = "1.0" }
-

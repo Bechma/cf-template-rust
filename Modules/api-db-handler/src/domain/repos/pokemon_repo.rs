@@ -1,4 +1,4 @@
-use api_db_handler_sdk::Pokemon;
+use {{ crate_name }}_sdk::Pokemon;
 use modkit::async_trait;
 use modkit_db::secure::DBRunner;
 use modkit_odata::{ODataQuery, Page};

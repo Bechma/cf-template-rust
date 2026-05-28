@@ -1,10 +1,10 @@
-# rest-gateway
+# {{ project-name }}
 
-Minimal REST host module that owns the Axum router and serves health endpoints.
+API gateway module that owns the Axum router and serves health endpoints.
 
 ## Overview
 
-The `rest-gateway` crate provides:
+The `{{ project-name }}` crate provides:
 
 - HTTP server lifecycle (bind, serve, graceful shutdown) via the `ModKit` `rest_host` capability
 - `/health` — JSON health response with `status`, `timestamp`, and `version`
@@ -28,7 +28,7 @@ Router / handlers
 
 ```yaml
 modules:
-  rest-host:
+  {{ project-name }}:
     config:
       bind_addr: "0.0.0.0:8080"   # default: 127.0.0.1:8080
       timeout_secs: 30             # default: 30

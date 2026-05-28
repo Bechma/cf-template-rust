@@ -1,15 +1,15 @@
 [package]
-name = "rest-gateway"
+name = "{{ project-name }}"
 version = "0.0.1"
 edition = "2024"
-description = "Minimal REST host module with health endpoints and standard middleware"
+description = "API gateway module with health endpoints and standard middleware"
 
 [lib]
-name = "rest_host"
+name = "{{ crate_name }}"
 
 [dependencies]
 # ModKit module system — the backbone for module lifecycle and capability wiring
-cf-modkit = { version = "0.6.2" }
+cf-modkit = { version = "0.6.10" }
 
 # HTTP framework
 axum = "0.8"

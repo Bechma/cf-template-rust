@@ -1,7 +1,7 @@
-//! `RestHostConfig` — runtime configuration for the REST host module.
+//! `{{ project-name | pascal_case }}Config` — runtime configuration for the API gateway module.
 //!
 //! Loaded by `ModKit` from the host application's config file under the
-//! `modules.rest_host.config` key (or whichever key the integrator chooses).
+//! `modules.{{ project-name }}.config` key.
 
 use serde::{Deserialize, Serialize};
 
@@ -13,19 +13,19 @@ fn default_timeout_secs() -> u64 {
     30
 }
 
-/// Configuration for the REST host module.
+/// Configuration for the API gateway module.
 ///
 /// Example YAML:
 /// ```yaml
 /// modules:
-///   rest_host:
+///   {{ project-name }}:
 ///     config:
 ///       bind_addr: "0.0.0.0:8080"
 ///       timeout_secs: 30
 /// ```
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
-pub struct RestHostConfig {
+pub struct {{ project-name | pascal_case }}Config {
     /// Socket address the HTTP server binds to (e.g. `"127.0.0.1:8080"`).
     #[serde(default = "default_bind_addr")]
     pub bind_addr: String,
@@ -36,7 +36,7 @@ pub struct RestHostConfig {
     pub timeout_secs: u64,
 }
 
-impl Default for RestHostConfig {
+impl Default for {{ project-name | pascal_case }}Config {
     fn default() -> Self {
         Self {
             bind_addr: default_bind_addr(),

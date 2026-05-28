@@ -12,7 +12,7 @@ Generate a project manually with `cargo generate --path Init --name my-project` 
 
 The [cf-cli](https://github.com/cyberfabric/cf-cli) leverage this cargo-generate tool for the use cases inside cyberfabric.
 
-Validate every template from the repo root with `bacon`. The default Bacon job fans out one validation per template from `bacon.toml`, while `scripts/validate-templates.sh` validates a single template at a time. Each validation writes generated output under `.bacon/validate-templates`, uses its own Cargo target directory there, then runs `cargo clippy --workspace --all-targets --all-features -- -D warnings` and `cargo test --workspace --all-targets --all-features` on the generated output.
+Validate every template from the repo root with `bacon`. The default Bacon job fans out one validation per template from `bacon.toml`, while `scripts/validate-templates.sh` validates a single template at a time. Each validation writes generated output under `.bacon/validate-templates`, keyed by template path and generated project name, uses its own Cargo target directory there, then runs `cargo clippy --workspace --all-targets --all-features -- -D warnings` and `cargo test --workspace --all-targets --all-features` on the generated output.
 
 ## Testing
 
@@ -28,24 +28,25 @@ If you want to validate a single template with `bacon`, run one of the named job
 bacon validate-init
 bacon validate-api-db-handler
 bacon validate-background-worker
-bacon validate-rest-gateway
+bacon validate-api-gateway
 ```
 
 Without `bacon`, run the validation script directly from the repo root:
 
 ```bash
 ./scripts/validate-templates.sh Init
-./scripts/validate-templates.sh Modules/api-db-handler
-./scripts/validate-templates.sh Modules/background-worker
-./scripts/validate-templates.sh Modules/rest-gateway
+./scripts/validate-templates.sh Modules/api-db-handler generated-template
+./scripts/validate-templates.sh Modules/background-worker generated-template
+./scripts/validate-templates.sh Modules/api-gateway generated-template
 ```
 
 To validate every template without `bacon`:
 
 ```bash
-for template in Init Modules/api-db-handler Modules/background-worker Modules/rest-gateway; do
-  ./scripts/validate-templates.sh "$template"
-done
+./scripts/validate-templates.sh Init
+./scripts/validate-templates.sh Modules/api-db-handler generated-template
+./scripts/validate-templates.sh Modules/background-worker generated-template
+./scripts/validate-templates.sh Modules/api-gateway generated-template
 ```
 
 If you want bacon to watch the whole repository from the root, run `bacon --watch .`.

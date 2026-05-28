@@ -3,7 +3,7 @@ use modkit::async_trait;
 use modkit_http::HttpClient;
 use std::time::{Duration, UNIX_EPOCH};
 
-use background_worker_sdk::Pokemon;
+use {{ crate_name }}_sdk::Pokemon;
 
 use crate::domain::error::DomainError;
 use crate::domain::ports::PokemonRepository;

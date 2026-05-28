@@ -1,11 +1,11 @@
-# api-db-handler
+# {{ project-name }}
 
 Pokemon management module with REST API, database storage, and inter-module communication via `ClientHub`.
 
 ## Module Structure
 
 ```
-api-db-handler/
+{{ project-name }}/
 ├── sdk/                              # Standalone SDK crate for external consumers
 │   ├── Cargo.toml
 │   └── src/
@@ -46,7 +46,7 @@ api-db-handler/
             ├── db.rs                 # db_err helper
             ├── entity/
             │   └── pokemon.rs        # SeaORM entity (DeriveEntityModel, Scopable)
-            ├── mapper.rs             # entity::Model → api_db_handler_sdk::Pokemon conversion
+            ├── mapper.rs             # entity::Model → {{ crate_name }}_sdk::Pokemon conversion
             ├── odata_mapper.rs       # PokemonFilterField → SeaORM Column mapping
             ├── pokemon_sea_repo.rs   # OrmPokemonRepository — implements PokemonRepository
             └── migrations/
@@ -57,7 +57,7 @@ api-db-handler/
 
 | Layer              | Package path                                | Rule                                                                     |
 |--------------------|---------------------------------------------|--------------------------------------------------------------------------|
-| **SDK**            | `api-db-handler-sdk` (`api_db_handler_sdk`) | Public contract. No server code, no DB. Safe to expose to other modules. |
+| **SDK**            | `{{ project-name }}-sdk` (`{{ crate_name }}_sdk`) | Public contract. No server code, no DB. Safe to expose to other modules. |
 | **API**            | `crate::api`                                | HTTP concerns only. Translates HTTP ↔ domain. No business logic.         |
 | **Domain**         | `crate::domain`                             | Business logic and rules. Must not import `api::*` or `infra::*`.        |
 | **Infrastructure** | `crate::infra`                              | Database persistence. Implements domain repository traits.               |
@@ -94,7 +94,7 @@ OrmPokemonRepository::get  (infra/storage/pokemon_sea_repo.rs)
     │
     ▼
 mapper::From<entity::Model>  (infra/storage/mapper.rs)
-    │  Converts: SeaORM Model → api_db_handler_sdk::Pokemon
+    │  Converts: SeaORM Model → {{ crate_name }}_sdk::Pokemon
     │
     ▼
 handlers::get_pokemon  (back in handler)
@@ -135,7 +135,7 @@ OrmPokemonRepository::list_page  (infra/storage/pokemon_sea_repo.rs)
     │     PokemonFilterField::Name     → Column::Name
     │     PokemonFilterField::CreatedAt → Column::CreatedAt
     │
-    └── mapper::From<entity::Model>   (per row: SeaORM Model → api_db_handler_sdk::Pokemon)
+    └── mapper::From<entity::Model>   (per row: SeaORM Model → {{ crate_name }}_sdk::Pokemon)
     │
     ▼
 handlers::list_pokemon  (back in handler)

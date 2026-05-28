@@ -7,7 +7,7 @@ use modkit_db::DbError;
 use sea_orm_migration::MigrationTrait;
 use tracing::{debug, info};
 
-use api_db_handler_sdk::PokemonClientV1;
+use {{ crate_name }}_sdk::PokemonClientV1;
 
 use crate::api::rest::routes;
 use crate::config::PokemonConfig;
@@ -20,7 +20,7 @@ pub(crate) type ConcreteAppServices = AppServices<OrmPokemonRepository>;
 
 /// Pokemon module with DDD-light layout and proper `ClientHub` integration
 #[modkit::module(
-    name = "api-db-handler",
+    name = "{{ project-name }}",
     capabilities = [db, rest]
 )]
 pub struct PokemonModule {

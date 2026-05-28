@@ -6,8 +6,8 @@ use modkit_odata::{ODataQuery, Page};
 use uuid::Uuid;
 
 #[cfg(feature = "odata")]
-use api_db_handler_sdk::PokemonStreamingClientV1;
-use api_db_handler_sdk::{Pokemon, PokemonClientV1, PokemonError};
+use {{ crate_name }}_sdk::PokemonStreamingClientV1;
+use {{ crate_name }}_sdk::{Pokemon, PokemonClientV1, PokemonError};
 
 #[cfg(feature = "odata")]
 use crate::domain::local_client::streaming::LocalPokemonStreamingClient;

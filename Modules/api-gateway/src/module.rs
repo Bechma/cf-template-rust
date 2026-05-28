@@ -1,11 +1,11 @@
-//! `RestHost` module definition.
+//! `{{ project-name | pascal_case }}` module definition.
 //!
-//! This is the aggregate root of the REST host bounded context.  It owns:
+//! This is the aggregate root of the API gateway bounded context.  It owns:
 //!
-//! * **Configuration** (`RestHostConfig`) — loaded once during `init`.
+//! * **Configuration** (`{{ project-name | pascal_case }}Config`) — loaded once during `init`.
 //! * **Router** — assembled in `rest_prepare` / `rest_finalize`, served in `serve`.
 //! * **`OpenAPI` registry** — a pass-through registry so that other `rest`-capable
-//!   modules can register their operations with this host.
+//!   modules can register their operations with this gateway.
 //!
 //! # Middleware stack (outermost → innermost / first to last in the request path)
 //!
@@ -44,28 +44,28 @@ use tower_http::{
 };
 use tracing::field::Empty;
 
-use crate::config::RestHostConfig;
+use crate::config::{{ project-name | pascal_case }}Config;
 use crate::middleware;
 use crate::web;
 
-/// REST host module — owns the HTTP server and the shared `axum::Router`.
+/// API gateway module — owns the HTTP server and the shared `axum::Router`.
 ///
 /// Declare this module in your application with:
 /// ```yaml
 /// modules:
-///   rest_host:
+///   {{ project-name }}:
 ///     config:
 ///       bind_addr: "0.0.0.0:8080"
 ///       timeout_secs: 30
 /// ```
 #[modkit::module(
-    name = "rest-host",
+    name = "{{ project-name }}",
     capabilities = [rest_host, stateful, system],
     lifecycle(entry = "serve", stop_timeout = "30s", await_ready)
 )]
-pub struct RestHost {
+pub struct {{ project-name | pascal_case }} {
     /// Effective configuration; set exactly once during `init`.
-    config: OnceLock<RestHostConfig>,
+    config: OnceLock<{{ project-name | pascal_case }}Config>,
 
     /// Shared `OpenAPI` registry delegated to other `rest`-capable modules.
     openapi_registry: Arc<modkit::OpenApiRegistryImpl>,
@@ -74,7 +74,7 @@ pub struct RestHost {
     final_router: Mutex<Option<Router>>,
 }
 
-impl Default for RestHost {
+impl Default for {{ project-name | pascal_case }} {
     fn default() -> Self {
         Self {
             config: OnceLock::new(),
@@ -84,29 +84,29 @@ impl Default for RestHost {
     }
 }
 
-impl SystemCapability for RestHost {}
+impl SystemCapability for {{ project-name | pascal_case }} {}
 
 // ── Private helpers ──────────────────────────────────────────────────────────
 
 /// Parses `addr_str` as a [`SocketAddr`], producing a descriptive error.
 ///
-/// Extracted as a free function so that both `RestHost::parse_bind_addr` (used
+/// Extracted as a free function so that both `{{ project-name | pascal_case }}::parse_bind_addr` (used
 /// by `serve`) and the fail-fast check in `init` share identical logic.
 fn parse_bind_addr_str(addr_str: &str) -> Result<SocketAddr> {
     addr_str
         .parse()
-        .map_err(|e| anyhow::anyhow!("RestHostConfig: invalid `bind_addr` '{addr_str}': {e}"))
+        .map_err(|e| anyhow::anyhow!("{{ project-name | pascal_case }}Config: invalid `bind_addr` '{addr_str}': {e}"))
 }
 
-impl RestHost {
+impl {{ project-name | pascal_case }} {
     /// Returns the cached config, or an error if `init` was never called.
     ///
     /// In practice this can only be `None` if a capability method is invoked
     /// before the `ModKit` lifecycle has run `init`, which is a framework-level
     /// programming error.
-    fn cfg(&self) -> anyhow::Result<&RestHostConfig> {
+    fn cfg(&self) -> anyhow::Result<&{{ project-name | pascal_case }}Config> {
         self.config.get().ok_or_else(|| {
-            anyhow::anyhow!("RestHost::init must complete before any capability method is called")
+            anyhow::anyhow!("{{ project-name | pascal_case }}::init must complete before any capability method is called")
         })
     }
 
@@ -120,7 +120,7 @@ impl RestHost {
 
         // ── 5) Timeout ────────────────────────────────────────────────────────
         // Added first so it wraps the router tightly; outermost layers added last.
-        // Use 408 Request Timeout (appropriate for a REST host, unlike 504 for a proxy).
+        // Use 408 Request Timeout (appropriate for an API gateway, unlike 504 for a proxy).
         router = router.layer(TimeoutLayer::with_status_code(
             StatusCode::REQUEST_TIMEOUT,
             timeout,
@@ -198,12 +198,12 @@ impl RestHost {
         let router = self.take_or_build_router()?;
 
         let listener = tokio::net::TcpListener::bind(addr).await?;
-        tracing::info!("REST host listening on {addr}");
+        tracing::info!("API gateway listening on {addr}");
         ready.notify(); // Starting → Running
 
         let shutdown = async move {
             cancel.cancelled().await;
-            tracing::info!("REST host shutting down gracefully");
+            tracing::info!("API gateway shutting down gracefully");
         };
 
         axum::serve(listener, router)
@@ -217,16 +217,16 @@ impl RestHost {
 
 /// `Module` — loads configuration during the init phase.
 #[modkit::async_trait]
-impl modkit::Module for RestHost {
+impl modkit::Module for {{ project-name | pascal_case }} {
     async fn init(&self, ctx: &modkit::context::ModuleCtx) -> anyhow::Result<()> {
-        let cfg = ctx.config::<RestHostConfig>()?;
+        let cfg = ctx.config::<{{ project-name | pascal_case }}Config>()?;
 
         // ── Fail-fast validation ──────────────────────────────────────────────
 
         // `timeout_secs` must be positive; a zero timeout would immediately
         // abort every request before any handler runs.
         if cfg.timeout_secs == 0 {
-            anyhow::bail!("RestHostConfig: `timeout_secs` must be > 0 (got 0)");
+            anyhow::bail!("{{ project-name | pascal_case }}Config: `timeout_secs` must be > 0 (got 0)");
         }
 
         // `bind_addr` must be parseable as a `SocketAddr` — the same check
@@ -237,15 +237,15 @@ impl modkit::Module for RestHost {
         // ── Commit configuration ──────────────────────────────────────────────
         self.config
             .set(cfg.clone())
-            .map_err(|_| anyhow::anyhow!("RestHostConfig already set; init called twice?"))?;
-        tracing::info!(bind_addr = %cfg.bind_addr, "REST host initialised");
+            .map_err(|_| anyhow::anyhow!("{{ project-name | pascal_case }}Config already set; init called twice?"))?;
+        tracing::info!(bind_addr = %cfg.bind_addr, "API gateway initialised");
         Ok(())
     }
 }
 
 /// `ApiGatewayCapability` (`rest_host`) — assembles the router across the two
 /// `ModKit` REST phases without starting the server.
-impl modkit::contracts::ApiGatewayCapability for RestHost {
+impl modkit::contracts::ApiGatewayCapability for {{ project-name | pascal_case }} {
     /// Phase 1: register built-in endpoints on the empty router that will be
     /// passed to every `rest`-capable module in turn.
     fn rest_prepare(
@@ -256,7 +256,7 @@ impl modkit::contracts::ApiGatewayCapability for RestHost {
         let router = router
             .route("/health", get(web::health_check))
             .route("/healthz", get(web::healthz));
-        tracing::debug!("REST host: /health and /healthz registered");
+        tracing::debug!("API gateway: /health and /healthz registered");
         Ok(router)
     }
 
@@ -269,12 +269,12 @@ impl modkit::contracts::ApiGatewayCapability for RestHost {
     ) -> anyhow::Result<Router> {
         let router = self.apply_middleware_stack(router)?;
         *self.final_router.lock() = Some(router.clone());
-        tracing::info!("REST host: router finalised with middleware stack");
+        tracing::info!("API gateway: router finalised with middleware stack");
         Ok(router)
     }
 
     /// Exposes the `OpenAPI` registry so that `rest`-capable peer modules can
-    /// register their operation specs with this host.
+    /// register their operation specs with this gateway.
     fn as_registry(&self) -> &dyn modkit::OpenApiRegistry {
         &*self.openapi_registry
     }

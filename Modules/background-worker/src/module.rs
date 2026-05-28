@@ -4,25 +4,25 @@ use std::sync::{Arc, OnceLock};
 use tokio::sync::Mutex;
 use tokio::task::JoinHandle;
 
-use background_worker_sdk::PokemonClientV1;
+use {{ crate_name }}_sdk::PokemonClientV1;
 
 use crate::config::{Config, default_interval};
 use crate::domain::local_client::PokemonLocalClient;
 use crate::domain::service::PokemonService;
 use crate::infra::PokemonHttpRepository;
 
-#[modkit::module(name = "background-worker", capabilities = [stateful])]
+#[modkit::module(name = "{{ project-name }}", capabilities = [stateful])]
 #[derive(Default)]
-pub struct BackgroundWorkerModule {
+pub struct {{ crate_name | pascal_case }}Module {
     config: OnceLock<Config>,
     service: OnceLock<Arc<PokemonService>>,
     task_handle: Arc<Mutex<Option<JoinHandle<()>>>>,
 }
 
 #[async_trait]
-impl Module for BackgroundWorkerModule {
+impl Module for {{ crate_name | pascal_case }}Module {
     async fn init(&self, ctx: &ModuleCtx) -> modkit::Result<()> {
-        tracing::info!("Initializing background-worker module");
+        tracing::info!("Initializing {{ project-name }} module");
         self.config
             .set(ctx.config::<Config>()?)
             .map_err(|_| anyhow::anyhow!("config already initialized"))?;
@@ -38,16 +38,16 @@ impl Module for BackgroundWorkerModule {
         ctx.client_hub()
             .register::<dyn PokemonClientV1>(Arc::new(local_client));
 
-        tracing::info!("background-worker registered PokemonClientV1 into ClientHub");
+        tracing::info!("{{ project-name }} registered PokemonClientV1 into ClientHub");
 
         Ok(())
     }
 }
 
 #[async_trait]
-impl RunnableCapability for BackgroundWorkerModule {
+impl RunnableCapability for {{ crate_name | pascal_case }}Module {
     async fn start(&self, cancel: tokio_util::sync::CancellationToken) -> modkit::Result<()> {
-        tracing::info!("Starting background-worker background fetcher");
+        tracing::info!("Starting {{ project-name }} background fetcher");
 
         let service = self
             .service
@@ -69,7 +69,7 @@ impl RunnableCapability for BackgroundWorkerModule {
             loop {
                 tokio::select! {
                     _ = cancel.cancelled() => {
-                        tracing::info!("background-worker fetcher cancelled");
+                        tracing::info!("{{ project-name }} fetcher cancelled");
                         break;
                     }
                     _ = interval.tick() => {
@@ -92,16 +92,16 @@ impl RunnableCapability for BackgroundWorkerModule {
     }
 
     async fn stop(&self, _cancel: tokio_util::sync::CancellationToken) -> modkit::Result<()> {
-        tracing::info!("Stopping background-worker module");
+        tracing::info!("Stopping {{ project-name }} module");
 
         if let Some(handle) = self.task_handle.lock().await.take() {
             if let Err(e) = handle.await {
-                tracing::error!("background-worker task panicked: {e}");
+                tracing::error!("{{ project-name }} task panicked: {e}");
             } else {
-                tracing::info!("background-worker task completed gracefully");
+                tracing::info!("{{ project-name }} task completed gracefully");
             }
         } else {
-            tracing::warn!("background-worker task was not running");
+            tracing::warn!("{{ project-name }} task was not running");
         }
 
         Ok(())
