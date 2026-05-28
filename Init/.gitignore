@@ -3,8 +3,8 @@
 debug
 target
 
-# CyberFabric generated code
-.cyberfabric
+# Gears generated code
+.gears
 
 # RustRover
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
