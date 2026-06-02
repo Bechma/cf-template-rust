@@ -1,2 +1,2 @@
 [template]
-ignore = [".DS_Store", ".cyberfabric", "target"]
+ignore = [".DS_Store", ".gears", "target"]

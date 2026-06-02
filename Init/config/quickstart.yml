@@ -1,11 +1,11 @@
 server:
-  home_dir: "~/.cyberfabric"
+  home_dir: "~/.gears"
 logging:
   default:
     console_level: info
 opentelemetry:
   resource:
-    service_name: "cyberfabric"
+    service_name: "gears"
     attributes:
       project_name: "hello_world"
   exporter:
@@ -18,6 +18,3 @@ modules:
   hello-world:
     config:
       interval: 1
-    metadata:
-      package: "hello-world"
-      version: "0.0.1"
