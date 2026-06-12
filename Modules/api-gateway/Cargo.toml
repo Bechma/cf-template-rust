@@ -8,7 +8,7 @@ description = "API gateway module with health endpoints and standard middleware"
 name = "{{ crate_name }}"
 
 [dependencies]
-# ModKit module system — the backbone for module lifecycle and capability wiring
+# cf-gears-toolkit — the backbone for module lifecycle and capability wiring
 cf-gears-toolkit = { version = "0.6.10" }
 
 # HTTP framework

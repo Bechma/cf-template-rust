@@ -103,7 +103,7 @@ impl {{ project-name | pascal_case }} {
     /// Returns the cached config, or an error if `init` was never called.
     ///
     /// In practice this can only be `None` if a capability method is invoked
-    /// before the `ModKit` lifecycle has run `init`, which is a framework-level
+    /// before the Toolkit lifecycle has run `init`, which is a framework-level
     /// programming error.
     fn cfg(&self) -> anyhow::Result<&{{ project-name | pascal_case }}Config> {
         self.config.get().ok_or_else(|| {
@@ -170,7 +170,7 @@ impl {{ project-name | pascal_case }} {
     }
 
     /// Builds a standalone router (health endpoints + middleware) for use when
-    /// the `ModKit` REST pipeline has not been run (e.g. in unit tests).
+    /// the Toolkit/Gears REST pipeline has not been run (e.g. in unit tests).
     fn build_router(&self) -> anyhow::Result<Router> {
         let router = Router::new()
             .route("/health", get(web::health_check))
@@ -214,9 +214,9 @@ impl {{ project-name | pascal_case }} {
     }
 }
 
-// ── ModKit trait implementations ─────────────────────────────────────────────
+// ── Gear trait implementations ───────────────────────────────────────────────
 
-/// `Module` — loads configuration during the init phase.
+/// `Gear` implementation for `{{ project-name | pascal_case }}`; `init(&self, ctx: &GearCtx)` loads configuration.
 #[async_trait]
 impl Gear for {{ project-name | pascal_case }} {
     async fn init(&self, ctx: &GearCtx) -> anyhow::Result<()> {
@@ -245,9 +245,9 @@ impl Gear for {{ project-name | pascal_case }} {
 }
 
 /// `ApiGatewayCapability` (`rest_host`) — assembles the router across the two
-/// `ModKit` REST phases without starting the server.
+/// Toolkit REST phases without starting the server.
 impl ApiGatewayCapability for {{ project-name | pascal_case }} {
-    /// Phase 1: register built-in endpoints on the empty router that will be
+    /// Toolkit phase 1: register built-in endpoints on the empty router that will be
     /// passed to every `rest`-capable module in turn.
     fn rest_prepare(
         &self,
@@ -261,7 +261,7 @@ impl ApiGatewayCapability for {{ project-name | pascal_case }} {
         Ok(router)
     }
 
-    /// Phase 2: apply the middleware stack to the fully-populated router and
+    /// Toolkit phase 2: apply the middleware stack to the fully-populated router and
     /// stash it so `serve` can pick it up.
     fn rest_finalize(
         &self,
